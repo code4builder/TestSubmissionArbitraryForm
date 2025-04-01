@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SubmissionArbitraryForm.Data": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)\\bin\\Debug\\net8.0"
+    }
+  }
+}
