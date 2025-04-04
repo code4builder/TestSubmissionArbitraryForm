@@ -28,27 +28,41 @@
     <hr />
 
     <!-- First and Last Name -->
-    <div>
-      <div class="control-row">
-        <div class="control">
-          <label for="first-name">First Name</label>
-          <input v-model="form.firstName" type="text" id="first-name" name="first-name" />
-          <span class="error" v-if="errors.firstName">{{ errors.firstName }}</span>
-        </div>
+    <div class="control-row">
+      <div class="control">
+        <label for="first-name">First Name</label>
+        <input v-model="form.firstName" type="text" id="first-name" name="first-name" />
+        <span class="error" v-if="errors.firstName">{{ errors.firstName }}</span>
+      </div>
 
-        <div class="control">
-          <label for="last-name">Last Name</label>
-          <input v-model="form.lastName" type="text" id="last-name" name="last-name" />
-          <span class="error" v-if="errors.lastName">{{ errors.lastName }}</span>
-        </div>
+      <div class="control">
+        <label for="last-name">Last Name</label>
+        <input v-model="form.lastName" type="text" id="last-name" name="last-name" />
+        <span class="error" v-if="errors.lastName">{{ errors.lastName }}</span>
       </div>
     </div>
 
     <hr />
 
+    <!-- Gender (Radio Field) -->
+    <fieldset>
+      <legend>Gender</legend>
+      <div class="control radio-control">
+        <input v-model="form.gender" type="radio" id="male" value="male" name="gender" />
+        <label for="male">Male</label>
+      </div>
+      <div class="control radio-control">
+        <input v-model="form.gender" type="radio" id="female" value="female" name="gender" />
+        <label for="female">Female</label>
+      </div>
+      <span class="error" v-if="errors.gender">{{ errors.gender }}</span>
+    </fieldset>
+
+    <hr />
+
     <!-- Role -->
     <div class="control">
-      <label for="role">What best describes your role?</label>
+      <label for="role">Role</label>
       <select v-model="form.role" id="role" name="role">
         <option value="">Select a role</option>
         <option value="student">Student</option>
@@ -58,6 +72,15 @@
         <option value="other">Other</option>
       </select>
       <span class="error" v-if="errors.role">{{ errors.role }}</span>
+    </div>
+
+    <hr />
+
+    <!-- City -->
+    <div class="control">
+      <label for="city">City</label>
+      <input v-model="form.city" id="city" type="text" name="city" />
+      <span class="error" v-if="errors.city">{{ errors.city }}</span>
     </div>
 
     <hr />
@@ -92,10 +115,11 @@ export default {
         confirmPassword: "",
         firstName: "",
         lastName: "",
+        gender: "", 
         street: "",
         number: "",
         postalCode: "",
-        city: "",
+        city: "", 
         role: "",
         acquisition: [],
         terms: false,
@@ -131,6 +155,14 @@ export default {
         this.errors.lastName = "Last Name is required.";
       }
 
+      if (!this.form.gender) {
+        this.errors.gender = "Please select your gender.";
+      }
+
+      if (!this.form.city) {
+        this.errors.city = "City is required."; 
+      }
+
       if (!this.form.role) {
         this.errors.role = "Please select a role.";
       }
@@ -156,6 +188,17 @@ export default {
 </script>
 
 <style scoped>
+/* Alignment for radio button and label */
+.radio-control {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 15px; 
+}
+
+.radio-control input {
+  margin-right: 8px;
+}
+
 .error {
   color: red;
   font-size: 0.9em;
