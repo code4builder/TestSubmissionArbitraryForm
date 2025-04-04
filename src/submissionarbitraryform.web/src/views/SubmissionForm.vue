@@ -7,6 +7,7 @@
     <div class="control">
       <label for="email">Email</label>
       <input v-model="form.email" id="email" type="email" name="email" />
+      <span class="error" v-if="errors.email">{{ errors.email }}</span>
     </div>
 
     <!-- Password and Confirm Password -->
@@ -14,11 +15,13 @@
       <div class="control">
         <label for="password">Password</label>
         <input v-model="form.password" id="password" type="password" name="password" />
+        <span class="error" v-if="errors.password">{{ errors.password }}</span>
       </div>
 
       <div class="control">
         <label for="confirm-password">Confirm Password</label>
         <input v-model="form.confirmPassword" id="confirm-password" type="password" name="confirm-password" />
+        <span class="error" v-if="errors.confirmPassword">{{ errors.confirmPassword }}</span>
       </div>
     </div>
 
@@ -30,78 +33,34 @@
         <div class="control">
           <label for="first-name">First Name</label>
           <input v-model="form.firstName" type="text" id="first-name" name="first-name" />
+          <span class="error" v-if="errors.firstName">{{ errors.firstName }}</span>
         </div>
 
         <div class="control">
           <label for="last-name">Last Name</label>
           <input v-model="form.lastName" type="text" id="last-name" name="last-name" />
+          <span class="error" v-if="errors.lastName">{{ errors.lastName }}</span>
         </div>
       </div>
-
-      <fieldset>
-        <legend>Your Address</legend>
-
-        <!-- Address fields -->
-        <div class="control-row">
-          <div class="control">
-            <label for="street">Street</label>
-            <input v-model="form.street" type="text" id="street" name="street" />
-          </div>
-
-          <div class="control">
-            <label for="number">Number</label>
-            <input v-model="form.number" type="text" id="number" name="number" />
-          </div>
-        </div>
-
-        <div class="control-row">
-          <div class="control">
-            <label for="postal-code">Postal Code</label>
-            <input v-model="form.postalCode" type="text" id="postal-code" name="postal-code" />
-          </div>
-
-          <div class="control">
-            <label for="city">City</label>
-            <input v-model="form.city" type="text" id="city" name="city" />
-          </div>
-        </div>
-      </fieldset>
     </div>
 
     <hr />
 
     <!-- Role -->
-    <div class="control-row">
-      <div class="control">
-        <label for="role">What best describes your role?</label>
-        <select v-model="form.role" id="role" name="role">
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
-          <option value="employee">Employee</option>
-          <option value="founder">Founder</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
+    <div class="control">
+      <label for="role">What best describes your role?</label>
+      <select v-model="form.role" id="role" name="role">
+        <option value="">Select a role</option>
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+        <option value="employee">Employee</option>
+        <option value="founder">Founder</option>
+        <option value="other">Other</option>
+      </select>
+      <span class="error" v-if="errors.role">{{ errors.role }}</span>
     </div>
 
-    <fieldset>
-      <legend>How did you find us?</legend>
-      <!-- Acquisition options -->
-      <div class="control">
-        <input v-model="form.acquisition" type="checkbox" id="google" name="acquisition" value="google" />
-        <label for="google">Google</label>
-      </div>
-
-      <div class="control">
-        <input v-model="form.acquisition" type="checkbox" id="friend" name="acquisition" value="friend" />
-        <label for="friend">Referred by friend</label>
-      </div>
-
-      <div class="control">
-        <input v-model="form.acquisition" type="checkbox" id="other" name="acquisition" value="other" />
-        <label for="other">Other</label>
-      </div>
-    </fieldset>
+    <hr />
 
     <!-- Terms and Conditions -->
     <div class="control-row">
@@ -110,6 +69,7 @@
           <input v-model="form.terms" type="checkbox" id="terms-and-conditions" name="terms" />
           I agree to the terms and conditions
         </label>
+        <span class="error" v-if="errors.terms">{{ errors.terms }}</span>
       </div>
     </div>
 
@@ -140,14 +100,52 @@ export default {
         acquisition: [],
         terms: false,
       },
+      errors: {},
     };
   },
   methods: {
+    validateForm() {
+      this.errors = {};
+
+      if (!this.form.email) {
+        this.errors.email = "Email is required.";
+      } else if (!/\S+@\S+\.\S+/.test(this.form.email)) {
+        this.errors.email = "Invalid email format.";
+      }
+
+      if (!this.form.password) {
+        this.errors.password = "Password is required.";
+      } else if (this.form.password.length < 6) {
+        this.errors.password = "Password must be at least 6 characters.";
+      }
+
+      if (this.form.confirmPassword !== this.form.password) {
+        this.errors.confirmPassword = "Passwords do not match.";
+      }
+
+      if (!this.form.firstName) {
+        this.errors.firstName = "First Name is required.";
+      }
+
+      if (!this.form.lastName) {
+        this.errors.lastName = "Last Name is required.";
+      }
+
+      if (!this.form.role) {
+        this.errors.role = "Please select a role.";
+      }
+
+      if (!this.form.terms) {
+        this.errors.terms = "You must agree to the terms.";
+      }
+
+      return Object.keys(this.errors).length === 0;
+    },
     async handleSubmit() {
+      if (!this.validateForm()) return;
+
       try {
-        // Call the API to save the form data
         await SubmissionService.create(this.form);
-        // Redirect to the Submission List view
         this.$router.push({ name: "submission-list" });
       } catch (error) {
         console.error("Error during submission:", error);
@@ -156,3 +154,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.error {
+  color: red;
+  font-size: 0.9em;
+}
+</style>
