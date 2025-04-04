@@ -43,6 +43,24 @@ public class SubmissionService
             .ToListAsync();
     }
 
+    public async Task<List<SubmissionDto>> GetAllSubmissionsWithValuesAsync()
+    {
+        var submissions = await _dbContext.Submissions
+            .Where(s => !s.IsDeleted)
+            .Include(s => s.Fields)
+            .ToListAsync();
+
+        return submissions.Select(s => new SubmissionDto
+        {
+            Id = s.Id,
+            Fields = s.Fields.Select(f => new FormFieldDto
+            {
+                FieldName = f.FieldName,
+                Value = f.GetValue() // Uses the overridden GetValue() method from FormField subclasses
+            }).ToList()
+        }).ToList();
+    }
+
     public async Task<bool> DeleteSubmissionAsync(Guid submissionId, string? deletedBy = null)
     {
         var submission = await _dbContext.Submissions.FindAsync(submissionId);
