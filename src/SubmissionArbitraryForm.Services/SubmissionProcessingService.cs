@@ -23,9 +23,10 @@ namespace SubmissionArbitraryForm.Services
             return await _submissionService.GetSubmissionByIdAsync(submissionId);
         }
 
-        public async Task<List<Submission>> GetAllSubmissionsAsync()
+        public async Task<List<SubmissionDto>> GetAllSubmissionsAsync()
         {
-            return await _submissionService.GetAllSubmissionsAsync();
+            //return await _submissionService.GetAllSubmissionsAsync();
+            return await _submissionService.GetAllSubmissionsWithValuesAsync();
         }
 
         public async Task<bool> UpdateSubmissionAsync(Guid submissionId, Dictionary<string, object> updatedData, string? modifiedBy = null)

@@ -29,7 +29,7 @@ public class Program
         {
             options.AddPolicy("AllowVueApp", builder =>
             {
-                builder.WithOrigins("http://127.0.0.1:4200") // check the port of your Vue app
+                builder.WithOrigins("http://localhost:50680") // check the port of your Vue app
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             });
