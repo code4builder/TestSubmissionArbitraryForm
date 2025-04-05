@@ -12,7 +12,7 @@ c. For storing your data, use either In-Memory database or any other storage tha
 require us to set up database servers or register in any online services. It is easier for us
 to review your task this way.
 4. Add UI for listing and searching the submitted objects from different forms on one page.
-5. Pack all JS- and CSS-files of the
+5. Pack all JS- and CSS-files using Vite bundling
 
 Used SQLite as a database. The ASP.NET API application should apply automatically already created EF migration
 To start Vue 3 application:
