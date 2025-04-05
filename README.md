@@ -15,3 +15,6 @@ to review your task this way.
 5. Pack all JS- and CSS-files of the
 
 Used SQLite as a database. The ASP.NET API application should apply automatically already created EF migration
+To start Vue 3 application:
+- npm install
+- npm run dev
