@@ -14,4 +14,4 @@ to review your task this way.
 4. Add UI for listing and searching the submitted objects from different forms on one page.
 5. Pack all JS- and CSS-files of the
 
-Used SQLite as a database
+Used SQLite as a database. The ASP.NET API application should apply automatically already created EF migration

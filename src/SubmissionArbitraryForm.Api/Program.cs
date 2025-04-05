@@ -37,6 +37,12 @@ public class Program
 
         var app = builder.Build();
 
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<SubmissionsDbContext>();
+            dbContext.Database.Migrate(); // apply any pending migrations
+        }
+
         app.UseCors("AllowVueApp");
 
         // Configure the HTTP request pipeline.
